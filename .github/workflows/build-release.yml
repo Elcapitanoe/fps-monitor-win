@@ -1,0 +1,108 @@
+permissions:
+  contents: write
+
+name: Build and Release FPS Overlay
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+      build-type:
+        description: 'Build configuration: Release or Debug'
+        required: false
+        default: 'Release'
+
+jobs:
+  build:
+    name: Build on Windows
+    runs-on: windows-latest
+    permissions:
+      contents: read  
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  
+
+      - name: Setup CMake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: '3.22.0'
+
+      - name: Create build directory
+        run: |
+          mkdir build
+          cd build
+
+      - name: Configure with CMake
+        run: |
+          cd build
+          cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=${{ github.event.inputs['build-type'] }} ..
+
+      - name: Build executable
+        run: |
+          cd build
+          cmake --build . --config ${{ github.event.inputs['build-type'] }} -- /m
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: fps-overlay-${{ github.event.inputs['version'] }}
+          path: build/${{ github.event.inputs['build-type'] }}/FPSOverlay.exe
+
+  release:
+    name: Create GitHub Release with Notes
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+
+    steps:
+      - name: Checkout repository for release notes
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Generate release notes from commits
+        id: generate_notes
+        run: |
+          # Determine previous tag
+          PREV_TAG=$(git tag --sort=-creatordate | grep -v "${{ github.event.inputs['version'] }}" | head -n1)
+          if [ -z "$PREV_TAG" ]; then
+            PREV_TAG=$(git rev-list --max-parents=0 HEAD)
+          fi
+          echo "Previous tag: $PREV_TAG"
+          # Generate changelog entries
+          NOTES=$(git log $PREV_TAG..HEAD --pretty=format:'- %s ([%h](https://github.com/'$GITHUB_REPOSITORY'/commit/%H))')
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: fps-overlay-${{ github.event.inputs['version'] }}
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.event.inputs['version'] }}
+          release_name: "FPS Overlay ${{ github.event.inputs['version'] }}"
+          body: ${{ steps.generate_notes.outputs.notes }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: softprops/action-upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/${{ github.event.inputs['build-type'] }}/FPSOverlay.exe
+          asset_name: FPSOverlay-${{ github.event.inputs['version'] }}.exe
+          asset_content_type: application/octet-stream
