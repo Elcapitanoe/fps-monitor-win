@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
@@ -41,7 +41,7 @@ jobs:
       - name: Configure project
         shell: pwsh
         run: |
-          cmake -S . -B build -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=${{ github.event.inputs['build-type'] }}
+          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=${{ github.event.inputs['build-type'] }}
 
       - name: Build executable
         shell: pwsh
@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - name: Checkout repository for release notes
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
@@ -87,9 +87,10 @@ jobs:
 
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@v2
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.event.inputs['version'] }}
           release_name: "FPS Overlay ${{ github.event.inputs['version'] }}"
           body: ${{ steps.generate_notes.outputs.notes }}
@@ -97,9 +98,11 @@ jobs:
           prerelease: false
 
       - name: Upload Release Asset
-        uses: softprops/action-upload-release-asset@v1
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/${{ github.event.inputs['build-type'] }}/FPSOverlay.exe
+          asset_path: FPSOverlay.exe
           asset_name: FPSOverlay-${{ github.event.inputs['version'] }}.exe
           asset_content_type: application/octet-stream
