@@ -14,8 +14,8 @@ endif()
 
 # Compiler flags for optimization and compatibility
 if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /O2 /MT")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /MT")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /O2")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2 -static-libgcc -static-libstdc++")
 endif()
@@ -62,7 +62,14 @@ if(WIN32)
 endif()
 
 # Static linking for single executable
-set_target_properties(FPSOverlay PROPERTIES
-    LINK_FLAGS_RELEASE "-static"
-    WIN32_EXECUTABLE TRUE
-)
+if(MSVC)
+    set_target_properties(FPSOverlay PROPERTIES
+        WIN32_EXECUTABLE FALSE
+        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+    )
+else()
+    set_target_properties(FPSOverlay PROPERTIES
+        LINK_FLAGS_RELEASE "-static"
+        WIN32_EXECUTABLE FALSE
+    )
+endif()
