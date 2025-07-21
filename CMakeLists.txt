@@ -44,7 +44,7 @@ set(HEADERS
 )
 
 # Create executable
-add_executable(FPSOverlay ${SOURCES} ${HEADERS} ${RESOURCES})
+add_executable(FPSOverlay ${SOURCES} ${HEADERS})
 
 # Windows libraries
 if(WIN32)
