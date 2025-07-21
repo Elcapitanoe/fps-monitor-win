@@ -33,21 +33,16 @@ jobs:
         with:
           cmake-version: '3.22.0'
 
-      - name: Prepare build directory
-        shell: pwsh
+      - name: Configure project
         run: |
-          New-Item -ItemType Directory -Path build -Force | Out-Null
-          Set-Location build
-
-      - name: Configure with CMake
+          cmake -S . -B build -G "Visual Studio 16 2019" \
+            -A x64 -DCMAKE_BUILD_TYPE=${{ github.event.inputs['build-type'] }}
         shell: pwsh
-        run: |
-          cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=${{ github.event.inputs['build-type'] }} ..
 
       - name: Build executable
-        shell: pwsh
         run: |
-          cmake --build . --config ${{ github.event.inputs['build-type'] }} -- /m
+          cmake --build build --config ${{ github.event.inputs['build-type'] }} -- /m
+        shell: pwsh
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
