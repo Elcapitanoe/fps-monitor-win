@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(FPSOverlay VERSION 1.0.0)
+project(FPSOverlay VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -44,8 +44,10 @@ set(HEADERS
 )
 
 # Windows resource file
-if(WIN32)
+if(WIN32 AND MSVC)
     set(RESOURCES FPSOverlay.rc)
+else()
+    set(RESOURCES "")
 endif()
 
 # Create executable
@@ -68,10 +70,17 @@ endif()
 
 # Static linking for single executable
 if(MSVC)
+    # Set compiler flags for static runtime
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+    
     set_target_properties(FPSOverlay PROPERTIES
         WIN32_EXECUTABLE FALSE
-        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+        LINK_FLAGS "/SUBSYSTEM:CONSOLE /INCREMENTAL:NO"
     )
+else()
+    set_target_properties(FPSOverlay PROPERTIES
+        LINK_FLAGS_RELEASE "-static -static-libgcc -static-libstdc++"
         WIN32_EXECUTABLE FALSE
     )
 endif()
