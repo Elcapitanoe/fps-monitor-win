@@ -72,14 +72,6 @@ if(MSVC)
         WIN32_EXECUTABLE FALSE
         MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
     )
-    # Additional static linking flags for MSVC
-    target_link_options(FPSOverlay PRIVATE
-        $<$<CONFIG:Release>:/SUBSYSTEM:CONSOLE>
-        /INCREMENTAL:NO
-    )
-else()
-    set_target_properties(FPSOverlay PROPERTIES
-        LINK_FLAGS_RELEASE "-static -static-libgcc -static-libstdc++"
         WIN32_EXECUTABLE FALSE
     )
 endif()
