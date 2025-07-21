@@ -19,14 +19,14 @@ jobs:
     name: Build on Windows
     runs-on: windows-latest
     permissions:
-      contents: read  
+      contents: read
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0  
+          fetch-depth: 0
 
       - name: Setup CMake
         uses: jwlawson/actions-setup-cmake@v2
@@ -49,7 +49,7 @@ jobs:
           cmake --build . --config ${{ github.event.inputs['build-type'] }} -- /m
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: fps-overlay-${{ github.event.inputs['version'] }}
           path: build/${{ github.event.inputs['build-type'] }}/FPSOverlay.exe
@@ -59,7 +59,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      contents: write 
+      contents: write
 
     steps:
       - name: Checkout repository for release notes
@@ -71,20 +71,18 @@ jobs:
       - name: Generate release notes from commits
         id: generate_notes
         run: |
-          # Determine previous tag
           PREV_TAG=$(git tag --sort=-creatordate | grep -v "${{ github.event.inputs['version'] }}" | head -n1)
           if [ -z "$PREV_TAG" ]; then
             PREV_TAG=$(git rev-list --max-parents=0 HEAD)
           fi
           echo "Previous tag: $PREV_TAG"
-          # Generate changelog entries
           NOTES=$(git log $PREV_TAG..HEAD --pretty=format:'- %s ([%h](https://github.com/'$GITHUB_REPOSITORY'/commit/%H))')
           echo "notes<<EOF" >> $GITHUB_OUTPUT
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: fps-overlay-${{ github.event.inputs['version'] }}
 
