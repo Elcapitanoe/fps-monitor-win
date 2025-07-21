@@ -155,18 +155,26 @@ bool FPSOverlay::ProcessCommandLine(int argc, wchar_t* argv[]) {
 void FPSOverlay::Update() {
     if (!m_running || !m_initialized) return;
     
-    // Update FPS calculation
+    // Update FPS calculation continuously (this gets called frequently)
     UpdateFPS();
     
-    // Check memory usage
-    MonitorMemoryUsage();
+    // Only do heavy operations less frequently
+    auto currentTime = std::chrono::high_resolution_clock::now();
+    auto timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(
+        currentTime - m_lastUpdateTime).count();
     
-    // Refresh hooks if needed
-    if (m_hookManager && m_hookManager->IsActive()) {
-        m_hookManager->RefreshHooks();
+    // Update memory usage and other heavy operations less frequently
+    if (timeSinceLastUpdate >= 1000) { // Every 1 second
+        MonitorMemoryUsage();
+        m_lastUpdateTime = currentTime;
+        
+        // Refresh hooks if needed
+        if (m_hookManager && m_hookManager->IsActive()) {
+            m_hookManager->RefreshHooks();
+        }
     }
     
-    // Render overlay
+    // Render overlay (this should be lightweight)
     if (m_renderer && m_renderer->IsInitialized()) {
         const OverlayConfig& config = m_configManager->GetConfig();
         if (config.enabled) {
@@ -179,14 +187,15 @@ void FPSOverlay::Update() {
 void FPSOverlay::UpdateWorker() {
     Utils::LogInfo(L"FPS Overlay update thread started");
     
-    const int updateInterval = m_configManager->GetConfig().updateInterval;
+    // Use a high frequency update for proper FPS detection (16ms ≈ 60fps)
+    const int highFrequencyInterval = 16; // milliseconds
     
     while (m_running) {
         try {
             Update();
             
-            // Sleep for the configured update interval
-            std::this_thread::sleep_for(std::chrono::milliseconds(updateInterval));
+            // Sleep for a short interval to allow proper frame detection
+            std::this_thread::sleep_for(std::chrono::milliseconds(highFrequencyInterval));
             
         } catch (const std::exception& e) {
             Utils::LogError(L"Exception in update worker: " + Utils::Utf8ToWide(e.what()));
@@ -206,11 +215,16 @@ void FPSOverlay::CalculateFPS(float deltaTime) {
     // Clamp delta time to prevent division by zero and handle spikes
     deltaTime = std::max(deltaTime, MIN_FRAME_TIME);
     
+    // Skip extremely small delta times that might be from too-frequent polling
+    if (deltaTime < 0.008f) { // Less than 8ms (125fps+)
+        return; // Don't update FPS for very small intervals
+    }
+    
     // Store frame time in circular buffer
     m_frameTimes[m_frameTimeIndex] = deltaTime;
     m_frameTimeIndex = (m_frameTimeIndex + 1) % FPS_SAMPLE_COUNT;
     
-    // Calculate average frame time
+    // Calculate average frame time from recent samples
     float totalTime = 0.0f;
     int validSamples = 0;
     
@@ -223,7 +237,14 @@ void FPSOverlay::CalculateFPS(float deltaTime) {
     
     if (validSamples > 0) {
         float averageFrameTime = totalTime / validSamples;
-        m_currentFPS = 1.0f / averageFrameTime;
+        float newFPS = 1.0f / averageFrameTime;
+        
+        // Smooth the FPS to reduce jitter
+        if (m_currentFPS > 0.0f) {
+            m_currentFPS = m_currentFPS * 0.9f + newFPS * 0.1f; // Exponential moving average
+        } else {
+            m_currentFPS = newFPS;
+        }
         
         // Clamp FPS to reasonable range
         m_currentFPS = std::max(0.1f, std::min(m_currentFPS, 9999.0f));

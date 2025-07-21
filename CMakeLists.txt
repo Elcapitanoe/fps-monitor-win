@@ -43,8 +43,13 @@ set(HEADERS
     include/common.h
 )
 
+# Windows resource file
+if(WIN32)
+    set(RESOURCES FPSOverlay.rc)
+endif()
+
 # Create executable
-add_executable(FPSOverlay ${SOURCES} ${HEADERS})
+add_executable(FPSOverlay ${SOURCES} ${HEADERS} ${RESOURCES})
 
 # Windows libraries
 if(WIN32)
@@ -67,9 +72,6 @@ if(MSVC)
         WIN32_EXECUTABLE FALSE
         MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
     )
-else()
-    set_target_properties(FPSOverlay PROPERTIES
-        LINK_FLAGS_RELEASE "-static"
         WIN32_EXECUTABLE FALSE
     )
 endif()
