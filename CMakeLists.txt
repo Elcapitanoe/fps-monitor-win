@@ -42,10 +42,9 @@ set(HEADERS
     include/utils.h
     include/common.h
 )
-endif()
 
 # Create executable
-add_executable(FPSOverlay ${SOURCES} ${HEADERS} ${RESOURCES})
+add_executable(FPSOverlay ${SOURCES} ${HEADERS})
 
 # Windows libraries
 if(WIN32)
