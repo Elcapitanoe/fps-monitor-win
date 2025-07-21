@@ -29,7 +29,7 @@ BOOL WINAPI ConsoleCtrlHandler(DWORD dwCtrlType) {
 }
 
 // Exception filter for crash handling
-LONG WINAPI UnhandledExceptionFilter(EXCEPTION_POINTERS* exceptionInfo) {
+LONG WINAPI CustomUnhandledExceptionFilter(EXCEPTION_POINTERS* exceptionInfo) {
     Utils::LogError(L"Unhandled exception occurred. Application will terminate.");
     
     if (g_overlay) {
@@ -41,7 +41,7 @@ LONG WINAPI UnhandledExceptionFilter(EXCEPTION_POINTERS* exceptionInfo) {
 
 int wmain(int argc, wchar_t* argv[]) {
     // Set up exception handling
-    SetUnhandledExceptionFilter(UnhandledExceptionFilter);
+    SetUnhandledExceptionFilter(CustomUnhandledExceptionFilter);
     SetConsoleCtrlHandler(ConsoleCtrlHandler, TRUE);
     
     try {
