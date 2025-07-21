@@ -42,7 +42,6 @@ set(HEADERS
     include/utils.h
     include/common.h
 )
-endif()
 
 # Create executable
 add_executable(FPSOverlay ${SOURCES} ${HEADERS} ${RESOURCES})
