@@ -33,19 +33,20 @@ jobs:
         with:
           cmake-version: '3.22.0'
 
-      - name: Create build directory
+      - name: Prepare build directory
+        shell: pwsh
         run: |
-          mkdir build
-          cd build
+          New-Item -ItemType Directory -Path build -Force | Out-Null
+          Set-Location build
 
       - name: Configure with CMake
+        shell: pwsh
         run: |
-          cd build
           cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=${{ github.event.inputs['build-type'] }} ..
 
       - name: Build executable
+        shell: pwsh
         run: |
-          cd build
           cmake --build . --config ${{ github.event.inputs['build-type'] }} -- /m
 
       - name: Upload build artifact
@@ -75,7 +76,6 @@ jobs:
           if [ -z "$PREV_TAG" ]; then
             PREV_TAG=$(git rev-list --max-parents=0 HEAD)
           fi
-          echo "Previous tag: $PREV_TAG"
           NOTES=$(git log $PREV_TAG..HEAD --pretty=format:'- %s ([%h](https://github.com/'$GITHUB_REPOSITORY'/commit/%H))')
           echo "notes<<EOF" >> $GITHUB_OUTPUT
           echo "$NOTES" >> $GITHUB_OUTPUT
