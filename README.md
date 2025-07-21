@@ -21,10 +21,10 @@ A lightweight, real-time FPS (Frames Per Second) monitoring overlay for Windows 
 ## Troubleshooting
 
 ### FPS Shows Wrong Values (e.g., 10fps on 100hz monitor)
-This was a bug in earlier versions where FPS was calculated every 500ms instead of per frame. **Fixed in v1.0.0+**:
+This was a bug in earlier versions where FPS was calculated every 500ms instead of per frame. **Fixed in v1.1+**:
 - Now uses 16ms update intervals for proper frame detection
 - Improved FPS calculation algorithm with smoothing
-- Accurate readings for high refresh rate monitors (100hz, 144hz, etc.)
+- Accurate readings for high refresh rate monitors (75hz, 100hz, 144hz, etc.)
 
 ### Windows Defender Virus Detection
 This is a **false positive** common with frame detection software:
