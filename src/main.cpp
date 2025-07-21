@@ -44,6 +44,12 @@ int wmain(int argc, wchar_t* argv[]) {
     SetUnhandledExceptionFilter(CustomUnhandledExceptionFilter);
     SetConsoleCtrlHandler(ConsoleCtrlHandler, TRUE);
     
+    // Display application info and antivirus warning
+    std::wcout << L"FPS Overlay v1.0.0 - https://github.com/Elcapitanoe/fps-monitor-win" << std::endl;
+    std::wcout << L"Note: This software may trigger antivirus false positives due to frame detection." << std::endl;
+    std::wcout << L"It is safe to use - source code is available on GitHub." << std::endl;
+    std::wcout << L"========================================" << std::endl;
+    
     try {
         // Check if another instance is already running
         if (Utils::IsApplicationAlreadyRunning()) {
