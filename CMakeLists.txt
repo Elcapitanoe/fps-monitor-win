@@ -42,12 +42,6 @@ set(HEADERS
     include/utils.h
     include/common.h
 )
-
-# Windows resource file
-if(WIN32 AND MSVC)
-    set(RESOURCES FPSOverlay.rc)
-else()
-    set(RESOURCES "")
 endif()
 
 # Create executable
@@ -78,9 +72,6 @@ if(MSVC)
         WIN32_EXECUTABLE FALSE
         LINK_FLAGS "/SUBSYSTEM:CONSOLE /INCREMENTAL:NO"
     )
-else()
-    set_target_properties(FPSOverlay PROPERTIES
-        LINK_FLAGS_RELEASE "-static -static-libgcc -static-libstdc++"
         WIN32_EXECUTABLE FALSE
     )
 endif()
