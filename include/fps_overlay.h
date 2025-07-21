@@ -26,7 +26,7 @@ public:
     void UpdateFPS();
     
     // Get current FPS
-    float GetCurrentFPS() const { return m_currentFPS; }
+    float GetCurrentFPS() const;
     
     // Process command line arguments
     bool ProcessCommandLine(int argc, wchar_t* argv[]);
@@ -46,7 +46,7 @@ private:
     
     // Threading
     std::thread m_updateThread;
-    std::mutex m_fpsMutex;
+    mutable std::mutex m_fpsMutex;
     
     // FPS calculation
     std::vector<float> m_frameTimes;

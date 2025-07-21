@@ -19,6 +19,9 @@ public:
     // Detect current graphics API
     GraphicsAPI DetectGraphicsAPI();
     
+    // Get current detected API
+    GraphicsAPI GetCurrentAPI() const { return m_detectedAPI; }
+    
     // Force refresh hooks (useful when switching applications)
     void RefreshHooks();
 
