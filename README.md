@@ -1,110 +1,126 @@
+
+
 # FPS Monitor for Windows
 
-A lightweight, real-time FPS (Frames Per Second) monitoring overlay for Windows applications and games.
+A lightweight, real-time overlay tool for monitoring frames per second (FPS) in games and applications on Windows.
 
-## Features
+## Core Features
 
-- **Real-time FPS monitoring** with high accuracy
-- **Low system impact** - minimal CPU and memory usage  
-- **Multiple graphics API support** - DirectX 9/11, OpenGL
-- **Customizable overlay** - position, colors, fonts
-- **Automatic game detection** - works with most applications
-- **Console and GUI support** - flexible usage options
+- **Accurate FPS Tracking**: Get precise, up-to-the-second frame rate stats.  
+- **Low Resource Usage**: Barely touches your CPU or memory.  
+- **Wide API Support**: Works with DirectX 9, DirectX 11, and OpenGL.  
+- **Overlay Customization**: Tweak position, colors, and font sizes to suit your setup.  
+- **Auto-Detection**: Spots running games and apps without manual setup.  
 
-## Quick Start
+## Quick Setup
 
-1. Download the latest release from [Releases](https://github.com/Elcapitanoe/fps-monitor-win/releases)
-2. Run `FPSOverlay.exe`
-3. The FPS overlay will appear on your screen
-4. Use `Ctrl+C` or close the console to stop
+1. Head to the [Releases page](https://github.com/Elcapitanoe/fps-monitor-win/releases) and download the latest version.  
+2. Launch `FPSOverlay.exe`.  
+3. See the FPS overlay pop up on your screen.  
+4. To exit, press `Ctrl+C` in the console or close the window.  
 
-## Troubleshooting
+## Troubleshooting Tips
 
-### FPS Shows Wrong Values (e.g., 10fps on 100hz monitor)
-This was a bug in earlier versions where FPS was calculated every 500ms instead of per frame. **Fixed in v1.1+**:
-- Now uses 16ms update intervals for proper frame detection
-- Improved FPS calculation algorithm with smoothing
-- Accurate readings for high refresh rate monitors (75hz, 100hz, 144hz, etc.)
+### FPS Readings Look Off (e.g., 10 FPS on a 100 Hz Monitor)  
+Older versions sampled FPS every 500 ms, which threw off results. **Fixed in v1.1+**:  
+- Now refreshes every 16 ms for spot-on accuracy.  
+- Smoother algorithm handles high refresh rates (75 Hz, 100 Hz, 144 Hz, etc.) flawlessly.  
 
-### Windows Defender Virus Detection
-This is a **false positive** common with frame detection software:
-- **Why it happens**: The software monitors graphics APIs and processes
-- **It's safe**: Source code is open and available for review
-- **Solutions**:
-  - Add exception in Windows Defender for `FPSOverlay.exe`
-  - Download from official GitHub releases only
-  - Compile from source if concerned
+### Windows Defender Flags It  
+A **false positive**, common for tools hooking into graphics APIs:  
+- **Reason**: It interacts with graphics processes, triggering suspicion.  
+- **Safety**: Open-source and fully auditable.  
+- **Fixes**:  
+  - Add `FPSOverlay.exe` to Defender’s exclusions.  
+  - Stick to official GitHub downloads.  
+  - Build from source for peace of mind.  
 
-### Missing DLL Errors (VCRUNTIME140.dll, etc.)
-Install **Microsoft Visual C++ Redistributable**:
-- Download from [Microsoft's official site](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)
-- Or use "VC Redist All in One" package
-- **Alternative**: Use the statically linked build (larger file, no dependencies)
+### Missing DLLs (e.g., VCRUNTIME140.dll)  
+You need the **Microsoft Visual C++ Redistributable**:  
+- Grab it from [Microsoft’s site](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist).  
+- Or install the "VC Redist All in One" package.  
+- **Bonus Option**: Use the statically linked build, zero dependencies.  
 
-## Configuration
+## Customization
 
-Edit `config.ini` to customize:
+Fine-tune the overlay with `config.ini`. Example:
+
 ```ini
-[Display]
-Position=TOP_LEFT
-FontSize=16
-TextColor=0,255,0,255
-UpdateInterval=16
+[Display]  
+Position=TOP_RIGHT  
+FontSize=18  
+TextColor=255,255,0,255  
+UpdateInterval=16  
 
-[Advanced]
-EnableHooks=true
-MemoryLimit=25MB
+[Advanced]  
+EnableHooks=true  
+MemoryLimit=25MB  
 ```
 
-## Build from Source
+- **Position**: Set overlay location (e.g., TOP_RIGHT, BOTTOM_LEFT).  
+- **FontSize**: Adjust text size for visibility.  
+- **TextColor**: Define RGBA values (red, green, blue, alpha).  
+- **UpdateInterval**: Refresh rate in milliseconds.  
+- **EnableHooks**: Toggle API hooking for advanced tracking.  
+- **MemoryLimit**: Restrict memory usage.  
 
-### Requirements
-- Windows 10/11
-- Visual Studio 2019+ or CMake 3.10+
-- Windows SDK
+## Build It Yourself
 
-### Build Steps
-```bash
-git clone https://github.com/Elcapitanoe/fps-monitor-win.git
-cd fps-monitor-win
-mkdir build && cd build
-cmake .. -G "Visual Studio 17 2022" -A x64
-cmake --build . --config Release
-```
+### Prerequisites  
+- Windows 10 or 11  
+- Visual Studio 2019 (or later) or CMake 3.10+  
+- Windows SDK  
 
-## Command Line Options
+### Build Instructions  
+1. Clone the repo:  
+   ```bash  
+   git clone https://github.com/Elcapitanoe/fps-monitor-win.git  
+   ```  
+2. Navigate to the directory:  
+   ```bash  
+   cd fps-monitor-win  
+   ```  
+3. Create a build folder:  
+   ```bash  
+   mkdir build && cd build  
+   ```  
+4. Generate build files:  
+   ```bash  
+   cmake .. -G "Visual Studio 17 2022" -A x64  
+   ```  
+5. Compile:  
+   ```bash  
+   cmake --build . --config Release  
+   ```  
 
-```bash
-FPSOverlay.exe [options]
+## Command Line Basics
 
-Options:
-  --help, -h, /?     Show help message
-  --version, -v      Show version information  
-  --config <file>    Use custom config file
-  --exit             Stop any running instance
-```
+Launch `FPSOverlay.exe` with these options:  
 
-## Technical Details
+- `--help`, `-h`, `/?`: Display usage info.  
+- `--version`, `-v`: Show the tool’s version.  
+- `--config <file>`: Load a custom config file.  
+- `--exit`: Terminate any running instance.  
 
-- **Update Frequency**: 16ms (≈60fps polling) for accurate detection
-- **Memory Usage**: <25MB typical
-- **CPU Impact**: <1% on modern systems
-- **Compatibility**: Windows 7+ (64-bit)
+## Tech Specs
+
+- **Polling Rate**: 16 ms (~60 FPS) for fluid updates.  
+- **Memory Use**: Typically under 25 MB.  
+- **CPU Load**: Less than 1% on modern rigs.  
+- **OS Support**: Windows 7+ (64-bit only).  
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) for details.
+Released under the MIT License. See [LICENSE](LICENSE) for details.  
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+1. Fork the repository.  
+2. Create a branch for your changes.  
+3. Implement your feature or fix.  
+4. Add tests if relevant.  
+5. Submit a pull request.  
 
-## Support
+## Get Support
 
-- **Issues**: [GitHub Issues](https://github.com/Elcapitanoe/fps-monitor-win/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Elcapitanoe/fps-monitor-win/discussions)
-- **Documentation**: See [docs/](docs/) folder
+- **Report Bugs**: Use [GitHub Issues](https://github.com/Elcapitanoe/fps-monitor-win/issues).
