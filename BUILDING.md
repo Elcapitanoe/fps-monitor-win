@@ -1,4 +1,4 @@
-# Building FPS Overlay v1.2.0
+# Building FPS Overlay v1.3.0
 
 This guide provides comprehensive instructions for building the FPS Overlay application on Windows systems.
 
@@ -236,7 +236,7 @@ The application is designed to be standalone:
 
 Recommended distribution structure:
 ```
-FPSOverlay-v1.2.0/
+FPSOverlay-v1.3.0/
 ├── FPSOverlay.exe
 ├── config.ini
 ├── README.md

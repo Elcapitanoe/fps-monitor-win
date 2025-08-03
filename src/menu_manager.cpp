@@ -341,7 +341,7 @@ void MenuManager::ShowAbout() {
     ClearScreen();
     std::wcout << L"=== ABOUT ===" << std::endl;
     std::wcout << L"FPS Monitor for Windows" << std::endl;
-    std::wcout << L"Version: 1.2.0" << std::endl;
+    std::wcout << L"Version: 1.3.0" << std::endl;
     std::wcout << L"Author: Elcapitanoe" << std::endl;
     std::wcout << L"GitHub: https://github.com/Elcapitanoe/fps-monitor-win" << std::endl;
     std::wcout << L"License: MIT" << std::endl;

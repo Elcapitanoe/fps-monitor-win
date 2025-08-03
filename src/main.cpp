@@ -55,22 +55,51 @@ int wmain(int argc, wchar_t* argv[]) {
     SetConsoleCtrlHandler(ConsoleCtrlHandler, TRUE);
     
     // Display application info and antivirus warning
-    std::wcout << L"FPS Overlay - https://github.com/Elcapitanoe/fps-monitor-win" << std::endl;
+    std::wcout << L"FPS Monitor for Windows v1.3.0" << std::endl;
+    std::wcout << L"https://github.com/Elcapitanoe/fps-monitor-win" << std::endl;
+    std::wcout << L"========================================" << std::endl;
     std::wcout << L"Note: This software may trigger antivirus false positives due to frame detection." << std::endl;
     std::wcout << L"It is safe to use - source code is available on GitHub." << std::endl;
     std::wcout << L"========================================" << std::endl;
     
     // Check for menu mode
     bool menuMode = false;
+    bool showHelp = false;
+    bool showVersion = false;
+    
     for (int i = 1; i < argc; i++) {
         std::wstring arg = argv[i];
         if (arg == L"--menu" || arg == L"-m") {
             menuMode = true;
-            break;
+        } else if (arg == L"--help" || arg == L"-h") {
+            showHelp = true;
+        } else if (arg == L"--version" || arg == L"-v") {
+            showVersion = true;
         }
     }
     
-    if (menuMode) {
+    // Show help if requested
+    if (showHelp) {
+        std::wcout << L"FPS Monitor for Windows v1.3.0" << std::endl;
+        std::wcout << L"Usage: FPSOverlay.exe [options]" << std::endl;
+        std::wcout << L"Options:" << std::endl;
+        std::wcout << L"  --menu, -m     Launch interactive control panel" << std::endl;
+        std::wcout << L"  --help, -h     Show this help message" << std::endl;
+        std::wcout << L"  --version, -v  Show version information" << std::endl;
+        std::wcout << L"  (no args)      Launch interactive control panel" << std::endl;
+        return 0;
+    }
+    
+    // Show version if requested
+    if (showVersion) {
+        std::wcout << L"FPS Monitor for Windows v1.3.0" << std::endl;
+        std::wcout << L"Author: Elcapitanoe" << std::endl;
+        std::wcout << L"GitHub: https://github.com/Elcapitanoe/fps-monitor-win" << std::endl;
+        return 0;
+    }
+    
+    // Default behavior: Launch menu if no arguments or if menu mode requested
+    if (menuMode || argc == 1) {
         // Initialize and run menu system
         g_menuManager = std::make_unique<MenuManager>();
         if (!g_menuManager->Initialize()) {
@@ -101,7 +130,7 @@ int wmain(int argc, wchar_t* argv[]) {
             return 1;
         }
         
-        Utils::LogInfo(L"Starting FPS Overlay v1.2.0");
+        Utils::LogInfo(L"Starting FPS Overlay v1.3.0");
         Utils::LogInfo(L"System: " + Utils::GetWindowsVersion());
         
         // Create overlay instance

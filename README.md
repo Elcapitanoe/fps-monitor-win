@@ -110,7 +110,16 @@ The FPS Monitor includes a comprehensive terminal-based control panel that provi
 FPSOverlay.exe --menu
 # or
 FPSOverlay.exe -m
+# or simply run without arguments (default behavior)
+FPSOverlay.exe
 ```
+
+### Command Line Options
+
+- `FPSOverlay.exe` - Launch interactive control panel (default)
+- `FPSOverlay.exe --menu` or `FPSOverlay.exe -m` - Launch interactive control panel
+- `FPSOverlay.exe --help` or `FPSOverlay.exe -h` - Show help information
+- `FPSOverlay.exe --version` or `FPSOverlay.exe -v` - Show version information
 
 ### Menu Features
 
@@ -190,6 +199,33 @@ Released under the MIT License. See [LICENSE](LICENSE) for details.
 3. Implement your feature or fix.  
 4. Add tests if relevant.  
 5. Submit a pull request.  
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Application Won't Launch**: 
+   - Make sure you're running the executable directly: `FPSOverlay.exe`
+   - Try running with help flag: `FPSOverlay.exe --help`
+   - Check if antivirus is blocking the application
+
+2. **No Menu Appears**: 
+   - The application now defaults to showing the interactive menu when run without arguments
+   - If no interface appears, try: `FPSOverlay.exe --menu`
+
+3. **Antivirus False Positives**: The application may trigger antivirus warnings due to its frame detection capabilities. This is a false positive - the source code is available on GitHub.
+
+4. **Windows Version**: Requires Windows 7 or later.
+
+5. **Graphics APIs**: The application supports DirectX 9, DirectX 11, and OpenGL applications.
+
+### Fixed in v1.2+:
+
+- **Default Menu Launch**: Application now launches the interactive control panel by default
+- **Better Command Line Interface**: Added help and version commands
+- **Improved Error Handling**: Better error messages and logging
+- **Enhanced Menu System**: Categorized options with better organization
+- **Fixed Compilation Issues**: Resolved all compilation errors and deprecation warnings
 
 ## Get Support
 

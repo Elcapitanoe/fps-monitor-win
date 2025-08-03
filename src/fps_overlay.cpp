@@ -308,7 +308,7 @@ void FPSOverlay::SetupExceptionHandling() {
 
 // Command line processing implementation
 void FPSOverlay::ShowHelp() {
-            std::wcout << L"FPS Overlay v1.2.0 - Real-time FPS monitoring for Windows\n\n";
+            std::wcout << L"FPS Overlay v1.3.0 - Real-time FPS monitoring for Windows\n\n";
     std::wcout << L"Usage: FPSOverlay.exe [options]\n\n";
     std::wcout << L"Options:\n";
     std::wcout << L"  --help, -h, /?        Show this help message\n";
@@ -325,7 +325,7 @@ void FPSOverlay::ShowHelp() {
 }
 
 void FPSOverlay::ShowVersion() {
-            std::wcout << L"FPS Overlay v1.2.0\n";
+            std::wcout << L"FPS Overlay v1.3.0\n";
     std::wcout << L"Built for Windows 7+ (32-bit/64-bit)\n";
     std::wcout << L"Copyright (c) 2024\n\n";
     std::wcout << L"System Information:\n";
