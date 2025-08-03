@@ -97,7 +97,77 @@ MemoryLimit=25MB
 
 Launch `FPSOverlay.exe` with these options:  
 
-- `--help`, `-h`, `/?`: Display usage info.  
+- `--help`, `-h`, `/?`: Display usage info.
+- `--menu`, `-m`: Launch the interactive control panel menu.
+
+## Interactive Control Panel
+
+The FPS Monitor includes a comprehensive terminal-based control panel that provides easy access to all features and settings.
+
+### Launching the Menu
+
+```bash
+FPSOverlay.exe --menu
+# or
+FPSOverlay.exe -m
+```
+
+### Menu Features
+
+The control panel is organized into logical categories:
+
+#### Configuration
+- **Change Overlay Position**: Set overlay position (Top-Left, Top-Right, Bottom-Left, Bottom-Right)
+- **Change Font Size**: Adjust the font size of the overlay text
+- **Change Text Color**: Modify the color of the overlay text
+- **Change Background Color**: Modify the background color of the overlay
+- **Toggle Overlay**: Enable or disable the FPS overlay
+- **Toggle Background**: Show or hide the overlay background
+- **Change Update Interval**: Set the update frequency of the overlay
+- **Reset to Defaults**: Restore all settings to default values
+- **Save Configuration**: Save current settings to config file
+- **Load Configuration**: Load settings from config file
+
+#### System
+- **System Information**: Display detailed system information
+- **System Compatibility**: Check system compatibility requirements
+- **Graphics APIs**: Show available graphics APIs
+- **Memory Usage**: Display current memory usage
+- **Process Information**: Show current process details
+- **Window Information**: Display active window details
+
+#### Performance
+- **Start Performance Test**: Begin performance benchmarking
+- **Stop Performance Test**: End performance benchmarking
+- **Performance Statistics**: Show performance statistics
+- **Optimize Settings**: Automatically optimize settings for best performance
+
+#### Utilities
+- **Clear Console**: Clear the console screen
+- **Show Logs**: Display application logs
+- **Backup Configuration**: Create a backup of current configuration
+- **Restore Configuration**: Restore configuration from backup
+- **Validate Configuration**: Check configuration file integrity
+
+#### Advanced
+- **Show Help**: Display help information
+- **About**: Show application information
+- **Exit Application**: Exit the FPS Monitor application
+
+### Navigation
+
+- Type the number of the option you want to select
+- Press 'h' for help
+- Press 'q' to quit
+- Type 'clear' to clear the console
+
+### System Information Display
+
+The menu header shows real-time system information:
+- Current user and computer name
+- Windows version and build
+- Time zone information
+- Available graphics APIs  
 - `--version`, `-v`: Show the tool’s version.  
 - `--config <file>`: Load a custom config file.  
 - `--exit`: Terminate any running instance.  

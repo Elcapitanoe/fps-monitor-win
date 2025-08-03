@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Release version (e.g., v1.0.0)'
+        description: 'Release version (e.g., v1.2.0)'
         required: true
       build-type:
         description: 'Build configuration: Release or Debug'

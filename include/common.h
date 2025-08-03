@@ -5,6 +5,7 @@
 #include <d3d11.h>
 #include <dxgi.h>
 #include <gl/GL.h>
+#include <conio.h>
 
 // Forward declarations to avoid full includes
 struct ID3DXFont;

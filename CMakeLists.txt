@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(FPSOverlay VERSION 1.0.0 LANGUAGES CXX)
+project(FPSOverlay VERSION 1.2.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -32,6 +32,7 @@ set(SOURCES
     src/renderer.cpp
     src/config_manager.cpp
     src/utils.cpp
+    src/menu_manager.cpp
 )
 
 set(HEADERS
@@ -41,6 +42,7 @@ set(HEADERS
     include/config_manager.h
     include/utils.h
     include/common.h
+    include/menu_manager.h
 )
 
 # Create executable

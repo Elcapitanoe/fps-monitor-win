@@ -1,5 +1,5 @@
 @echo off
-echo Building FPS Overlay v1.0.0
+echo Building FPS Overlay v1.2.0
 echo ================================
 
 :: Check if Visual Studio is available

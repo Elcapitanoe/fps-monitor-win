@@ -1,4 +1,5 @@
 #include "fps_overlay.h"
+#include "menu_manager.h"
 #include "utils.h"
 #include <iostream>
 
@@ -10,6 +11,9 @@ std::mutex g_configMutex;
 // Global overlay instance
 std::unique_ptr<FPSOverlay> g_overlay;
 
+// Global menu manager instance
+std::unique_ptr<MenuManager> g_menuManager;
+
 // Console control handler for graceful shutdown
 BOOL WINAPI ConsoleCtrlHandler(DWORD dwCtrlType) {
     switch (dwCtrlType) {
@@ -20,6 +24,9 @@ BOOL WINAPI ConsoleCtrlHandler(DWORD dwCtrlType) {
     case CTRL_SHUTDOWN_EVENT:
         if (g_overlay) {
             g_overlay->Stop();
+        }
+        if (g_menuManager) {
+            g_menuManager->ExitApplication();
         }
         g_running = false;
         return TRUE;
@@ -35,6 +42,9 @@ LONG WINAPI CustomUnhandledExceptionFilter(EXCEPTION_POINTERS* exceptionInfo) {
     if (g_overlay) {
         g_overlay->Stop();
     }
+    if (g_menuManager) {
+        g_menuManager->ExitApplication();
+    }
     
     return EXCEPTION_EXECUTE_HANDLER;
 }
@@ -49,6 +59,28 @@ int wmain(int argc, wchar_t* argv[]) {
     std::wcout << L"Note: This software may trigger antivirus false positives due to frame detection." << std::endl;
     std::wcout << L"It is safe to use - source code is available on GitHub." << std::endl;
     std::wcout << L"========================================" << std::endl;
+    
+    // Check for menu mode
+    bool menuMode = false;
+    for (int i = 1; i < argc; i++) {
+        std::wstring arg = argv[i];
+        if (arg == L"--menu" || arg == L"-m") {
+            menuMode = true;
+            break;
+        }
+    }
+    
+    if (menuMode) {
+        // Initialize and run menu system
+        g_menuManager = std::make_unique<MenuManager>();
+        if (!g_menuManager->Initialize()) {
+            std::wcout << L"Failed to initialize menu system." << std::endl;
+            return 1;
+        }
+        
+        g_menuManager->RunMenuLoop();
+        return 0;
+    }
     
     try {
         // Check if another instance is already running
@@ -69,7 +101,7 @@ int wmain(int argc, wchar_t* argv[]) {
             return 1;
         }
         
-        Utils::LogInfo(L"Starting FPS Overlay v1.0.0");
+        Utils::LogInfo(L"Starting FPS Overlay v1.2.0");
         Utils::LogInfo(L"System: " + Utils::GetWindowsVersion());
         
         // Create overlay instance
