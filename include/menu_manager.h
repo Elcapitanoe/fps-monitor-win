@@ -123,4 +123,7 @@ private:
     bool m_showAdvancedOptions;
     int m_currentPage;
     static const int OPTIONS_PER_PAGE = 20;
+    
+    // Private helper to initialize menu options
+    void InitializeMenuOptions();
 }; 

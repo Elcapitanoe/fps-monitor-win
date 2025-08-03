@@ -90,38 +90,59 @@ bool CreateDirectoryRecursive(const std::wstring& dirPath) {
 
 // System information
 bool IsWindows7OrLater() {
-    OSVERSIONINFOEXW osvi;
-    ZeroMemory(&osvi, sizeof(OSVERSIONINFOEXW));
-    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEXW);
+    typedef NTSTATUS(WINAPI* RtlGetVersionPtr)(PRTL_OSVERSIONINFOW);
     
-    if (GetVersionExW((OSVERSIONINFOW*)&osvi)) {
-        return (osvi.dwMajorVersion > 6) || 
-               (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion >= 1);
+    HMODULE hNtdll = GetModuleHandleW(L"ntdll.dll");
+    if (hNtdll) {
+        RtlGetVersionPtr RtlGetVersion = (RtlGetVersionPtr)GetProcAddress(hNtdll, "RtlGetVersion");
+        if (RtlGetVersion) {
+            RTL_OSVERSIONINFOW osvi = { 0 };
+            osvi.dwOSVersionInfoSize = sizeof(RTL_OSVERSIONINFOW);
+            
+            if (NT_SUCCESS(RtlGetVersion(&osvi))) {
+                return (osvi.dwMajorVersion > 6) || 
+                       (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion >= 1);
+            }
+        }
     }
     return false;
 }
 
 bool IsWindows10OrLater() {
-    OSVERSIONINFOEXW osvi;
-    ZeroMemory(&osvi, sizeof(OSVERSIONINFOEXW));
-    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEXW);
+    typedef NTSTATUS(WINAPI* RtlGetVersionPtr)(PRTL_OSVERSIONINFOW);
     
-    if (GetVersionExW((OSVERSIONINFOW*)&osvi)) {
-        return osvi.dwMajorVersion >= 10;
+    HMODULE hNtdll = GetModuleHandleW(L"ntdll.dll");
+    if (hNtdll) {
+        RtlGetVersionPtr RtlGetVersion = (RtlGetVersionPtr)GetProcAddress(hNtdll, "RtlGetVersion");
+        if (RtlGetVersion) {
+            RTL_OSVERSIONINFOW osvi = { 0 };
+            osvi.dwOSVersionInfoSize = sizeof(RTL_OSVERSIONINFOW);
+            
+            if (NT_SUCCESS(RtlGetVersion(&osvi))) {
+                return osvi.dwMajorVersion >= 10;
+            }
+        }
     }
     return false;
 }
 
 std::wstring GetWindowsVersion() {
-    OSVERSIONINFOEXW osvi;
-    ZeroMemory(&osvi, sizeof(OSVERSIONINFOEXW));
-    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEXW);
+    typedef NTSTATUS(WINAPI* RtlGetVersionPtr)(PRTL_OSVERSIONINFOW);
     
-    if (GetVersionExW((OSVERSIONINFOW*)&osvi)) {
-        std::wostringstream oss;
-        oss << L"Windows " << osvi.dwMajorVersion << L"." << osvi.dwMinorVersion;
-        oss << L" Build " << osvi.dwBuildNumber;
-        return oss.str();
+    HMODULE hNtdll = GetModuleHandleW(L"ntdll.dll");
+    if (hNtdll) {
+        RtlGetVersionPtr RtlGetVersion = (RtlGetVersionPtr)GetProcAddress(hNtdll, "RtlGetVersion");
+        if (RtlGetVersion) {
+            RTL_OSVERSIONINFOW osvi = { 0 };
+            osvi.dwOSVersionInfoSize = sizeof(RTL_OSVERSIONINFOW);
+            
+            if (NT_SUCCESS(RtlGetVersion(&osvi))) {
+                std::wostringstream oss;
+                oss << L"Windows " << osvi.dwMajorVersion << L"." << osvi.dwMinorVersion;
+                oss << L" Build " << osvi.dwBuildNumber;
+                return oss.str();
+            }
+        }
     }
     return L"Unknown Windows Version";
 }
