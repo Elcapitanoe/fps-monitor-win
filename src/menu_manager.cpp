@@ -135,7 +135,7 @@ void MenuManager::InitializeMenuOptions() {
     // Build options map
     for (const auto& category : m_categories) {
         for (const auto& option : category.options) {
-            m_options[option.id] = option;
+            m_options.insert(std::make_pair(option.id, option));
         }
     }
 }
@@ -571,7 +571,7 @@ void MenuManager::PauseForUser() {
 }
 
 std::wstring MenuManager::CenterText(const std::wstring& text, int width) {
-    int padding = (width - text.length()) / 2;
+    int padding = static_cast<int>((width - text.length()) / 2);
     if (padding < 0) padding = 0;
     return std::wstring(padding, ' ') + text;
 }

@@ -6,6 +6,7 @@
 #include <dxgi.h>
 #include <gl/GL.h>
 #include <conio.h>
+#include <winternl.h>
 
 // Forward declarations to avoid full includes
 struct ID3DXFont;

@@ -15,6 +15,9 @@ struct MenuOption {
     std::function<void()> action;
     bool enabled;
     
+    // Default constructor for std::map compatibility
+    MenuOption() : id(0), enabled(false) {}
+    
     MenuOption(int optionId, const std::wstring& optionName, 
                const std::wstring& optionDescription, const std::wstring& optionCategory,
                std::function<void()> optionAction, bool optionEnabled = true)

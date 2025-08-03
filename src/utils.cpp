@@ -99,7 +99,8 @@ bool IsWindows7OrLater() {
             RTL_OSVERSIONINFOW osvi = { 0 };
             osvi.dwOSVersionInfoSize = sizeof(RTL_OSVERSIONINFOW);
             
-            if (NT_SUCCESS(RtlGetVersion(&osvi))) {
+            NTSTATUS status = RtlGetVersion(&osvi);
+            if (status >= 0) { // NT_SUCCESS equivalent
                 return (osvi.dwMajorVersion > 6) || 
                        (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion >= 1);
             }
@@ -118,7 +119,8 @@ bool IsWindows10OrLater() {
             RTL_OSVERSIONINFOW osvi = { 0 };
             osvi.dwOSVersionInfoSize = sizeof(RTL_OSVERSIONINFOW);
             
-            if (NT_SUCCESS(RtlGetVersion(&osvi))) {
+            NTSTATUS status = RtlGetVersion(&osvi);
+            if (status >= 0) { // NT_SUCCESS equivalent
                 return osvi.dwMajorVersion >= 10;
             }
         }
@@ -136,7 +138,8 @@ std::wstring GetWindowsVersion() {
             RTL_OSVERSIONINFOW osvi = { 0 };
             osvi.dwOSVersionInfoSize = sizeof(RTL_OSVERSIONINFOW);
             
-            if (NT_SUCCESS(RtlGetVersion(&osvi))) {
+            NTSTATUS status = RtlGetVersion(&osvi);
+            if (status >= 0) { // NT_SUCCESS equivalent
                 std::wostringstream oss;
                 oss << L"Windows " << osvi.dwMajorVersion << L"." << osvi.dwMinorVersion;
                 oss << L" Build " << osvi.dwBuildNumber;
