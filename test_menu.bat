@@ -1,24 +1,20 @@
 @echo off
-echo Testing FPS Monitor Menu System
+echo Testing FPS Monitor Menu Changes
 echo ================================
 echo.
-
-echo Building the application...
-call build.bat
-
-if %ERRORLEVEL% NEQ 0 (
-    echo Build failed!
-    pause
-    exit /b 1
-)
-
+echo 1. Testing help option...
+echo FPSOverlay.exe --help
 echo.
-echo Testing menu system...
-echo Launching FPS Monitor with menu mode...
+echo 2. Testing version option...
+echo FPSOverlay.exe --version
 echo.
-
-FPSOverlay.exe --menu
-
+echo 3. Testing menu option...
+echo FPSOverlay.exe --menu
 echo.
-echo Menu test completed.
+echo 4. Testing default launch (should launch FPS overlay directly)...
+echo FPSOverlay.exe
+echo.
+echo Note: The application will now launch the FPS overlay by default
+echo instead of the menu. Use --menu flag to access the configuration menu.
+echo.
 pause 

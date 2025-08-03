@@ -15,9 +15,10 @@ A lightweight, real-time overlay tool for monitoring frames per second (FPS) in 
 ## Quick Setup
 
 1. Head to the [Releases page](https://github.com/Elcapitanoe/fps-monitor-win/releases) and download the latest version.  
-2. Launch `FPSOverlay.exe`.  
+2. Launch `FPSOverlay.exe` to start the FPS overlay directly.  
 3. See the FPS overlay pop up on your screen.  
-4. To exit, press `Ctrl+C` in the console or close the window.  
+4. To access the configuration menu, use `FPSOverlay.exe --menu`.  
+5. To exit, press `Ctrl+C` in the console or close the window.  
 
 ## Troubleshooting Tips
 
@@ -99,10 +100,14 @@ Launch `FPSOverlay.exe` with these options:
 
 - `--help`, `-h`, `/?`: Display usage info.
 - `--menu`, `-m`: Launch the interactive control panel menu.
+- `--version`, `-v`: Show the tool's version.
+- `--config <file>`: Load a custom config file.
+- `--exit`: Terminate any running instance.
+- `(no args)`: Launch FPS overlay directly (default behavior).
 
 ## Interactive Control Panel
 
-The FPS Monitor includes a comprehensive terminal-based control panel that provides easy access to all features and settings.
+The FPS Monitor includes a terminal-based control panel that provides easy access to configuration settings.
 
 ### Launching the Menu
 
@@ -110,20 +115,20 @@ The FPS Monitor includes a comprehensive terminal-based control panel that provi
 FPSOverlay.exe --menu
 # or
 FPSOverlay.exe -m
-# or simply run without arguments (default behavior)
-FPSOverlay.exe
 ```
+
+**Note**: The FPS overlay now launches directly by default. Use the `--menu` flag to access the configuration menu.
 
 ### Command Line Options
 
-- `FPSOverlay.exe` - Launch interactive control panel (default)
+- `FPSOverlay.exe` - Launch FPS overlay directly (default)
 - `FPSOverlay.exe --menu` or `FPSOverlay.exe -m` - Launch interactive control panel
 - `FPSOverlay.exe --help` or `FPSOverlay.exe -h` - Show help information
 - `FPSOverlay.exe --version` or `FPSOverlay.exe -v` - Show version information
 
 ### Menu Features
 
-The control panel is organized into logical categories:
+The control panel provides configuration options:
 
 #### Configuration
 - **Change Overlay Position**: Set overlay position (Top-Left, Top-Right, Bottom-Left, Bottom-Right)
@@ -136,31 +141,6 @@ The control panel is organized into logical categories:
 - **Reset to Defaults**: Restore all settings to default values
 - **Save Configuration**: Save current settings to config file
 - **Load Configuration**: Load settings from config file
-
-#### System
-- **System Information**: Display detailed system information
-- **System Compatibility**: Check system compatibility requirements
-- **Graphics APIs**: Show available graphics APIs
-- **Memory Usage**: Display current memory usage
-- **Process Information**: Show current process details
-- **Window Information**: Display active window details
-
-#### Performance
-- **Start Performance Test**: Begin performance benchmarking
-- **Stop Performance Test**: End performance benchmarking
-- **Performance Statistics**: Show performance statistics
-- **Optimize Settings**: Automatically optimize settings for best performance
-
-#### Utilities
-- **Clear Console**: Clear the console screen
-- **Show Logs**: Display application logs
-- **Backup Configuration**: Create a backup of current configuration
-- **Restore Configuration**: Restore configuration from backup
-- **Validate Configuration**: Check configuration file integrity
-
-#### Advanced
-- **Show Help**: Display help information
-- **About**: Show application information
 - **Exit Application**: Exit the FPS Monitor application
 
 ### Navigation
@@ -176,10 +156,7 @@ The menu header shows real-time system information:
 - Current user and computer name
 - Windows version and build
 - Time zone information
-- Available graphics APIs  
-- `--version`, `-v`: Show the tool’s version.  
-- `--config <file>`: Load a custom config file.  
-- `--exit`: Terminate any running instance.  
+- Available graphics APIs
 
 ## Tech Specs
 

@@ -42,12 +42,8 @@ void MenuManager::InitializeMenuOptions() {
     m_categories.clear();
     m_options.clear();
     
-    // Create categories
+    // Create categories - only keep CONFIGURATION
     MenuCategory configCategory(L"CONFIGURATION", L"Overlay settings and preferences");
-    MenuCategory systemCategory(L"SYSTEM", L"System information and diagnostics");
-    MenuCategory performanceCategory(L"PERFORMANCE", L"Performance monitoring and optimization");
-    MenuCategory utilityCategory(L"UTILITIES", L"Utility functions and tools");
-    MenuCategory advancedCategory(L"ADVANCED", L"Advanced options and debugging");
     
     // Configuration options
     configCategory.options = {
@@ -70,67 +66,13 @@ void MenuManager::InitializeMenuOptions() {
         MenuOption(9, L"Save Configuration", L"Save current settings to config file", L"CONFIGURATION", 
                   [this]() { SaveConfiguration(); }),
         MenuOption(10, L"Load Configuration", L"Load settings from config file", L"CONFIGURATION", 
-                   [this]() { LoadConfiguration(); })
-    };
-    
-    // System options
-    systemCategory.options = {
-        MenuOption(11, L"System Information", L"Display detailed system information", L"SYSTEM", 
-                  [this]() { ShowSystemInfo(); }),
-        MenuOption(12, L"System Compatibility", L"Check system compatibility requirements", L"SYSTEM", 
-                  [this]() { ShowSystemCompatibility(); }),
-        MenuOption(13, L"Graphics APIs", L"Show available graphics APIs", L"SYSTEM", 
-                  [this]() { ShowGraphicsAPIs(); }),
-        MenuOption(14, L"Memory Usage", L"Display current memory usage", L"SYSTEM", 
-                  [this]() { ShowMemoryUsage(); }),
-        MenuOption(15, L"Process Information", L"Show current process details", L"SYSTEM", 
-                  [this]() { ShowProcessInfo(); }),
-        MenuOption(16, L"Window Information", L"Display active window details", L"SYSTEM", 
-                  [this]() { ShowWindowInfo(); })
-    };
-    
-    // Performance options
-    performanceCategory.options = {
-        MenuOption(21, L"Start Performance Test", L"Begin performance benchmarking", L"PERFORMANCE", 
-                  [this]() { StartPerformanceTest(); }),
-        MenuOption(22, L"Stop Performance Test", L"End performance benchmarking", L"PERFORMANCE", 
-                  [this]() { StopPerformanceTest(); }),
-        MenuOption(23, L"Performance Statistics", L"Show performance statistics", L"PERFORMANCE", 
-                  [this]() { ShowPerformanceStats(); }),
-        MenuOption(24, L"Optimize Settings", L"Automatically optimize settings for best performance", L"PERFORMANCE", 
-                  [this]() { OptimizeSettings(); })
-    };
-    
-    // Utility options
-    utilityCategory.options = {
-        MenuOption(31, L"Clear Console", L"Clear the console screen", L"UTILITIES", 
-                  [this]() { ClearConsole(); }),
-        MenuOption(32, L"Show Logs", L"Display application logs", L"UTILITIES", 
-                  [this]() { ShowLogs(); }),
-        MenuOption(33, L"Backup Configuration", L"Create a backup of current configuration", L"UTILITIES", 
-                  [this]() { BackupConfig(); }),
-        MenuOption(34, L"Restore Configuration", L"Restore configuration from backup", L"UTILITIES", 
-                  [this]() { RestoreConfig(); }),
-        MenuOption(35, L"Validate Configuration", L"Check configuration file integrity", L"UTILITIES", 
-                  [this]() { ValidateConfig(); })
-    };
-    
-    // Advanced options
-    advancedCategory.options = {
-        MenuOption(41, L"Show Help", L"Display help information", L"ADVANCED", 
-                  [this]() { ShowHelp(); }),
-        MenuOption(42, L"About", L"Show application information", L"ADVANCED", 
-                  [this]() { ShowAbout(); }),
-        MenuOption(99, L"Exit Application", L"Exit the FPS Monitor application", L"ADVANCED", 
+                   [this]() { LoadConfiguration(); }),
+        MenuOption(99, L"Exit Application", L"Exit the FPS Monitor application", L"CONFIGURATION", 
                   [this]() { ExitApplication(); })
     };
     
-    // Add categories
+    // Add categories - only CONFIGURATION
     m_categories.push_back(configCategory);
-    m_categories.push_back(systemCategory);
-    m_categories.push_back(performanceCategory);
-    m_categories.push_back(utilityCategory);
-    m_categories.push_back(advancedCategory);
     
     // Build options map
     for (const auto& category : m_categories) {
@@ -193,7 +135,7 @@ void MenuManager::DisplayCategories() {
 void MenuManager::DisplayFooter() {
     std::wcout << CreateSeparator() << std::endl;
     std::wcout << L"NOTE: Type option number to select. Press 'h' for help, 'q' to quit." << std::endl;
-    std::wcout << L"Recommended: Use option 1-10 to configure overlay settings." << std::endl;
+    std::wcout << L"Use options 1-10 to configure overlay settings. Option 99 to exit." << std::endl;
     std::wcout << CreateSeparator() << std::endl;
 }
 
@@ -291,32 +233,6 @@ std::wstring MenuManager::GetTimeZoneInfo() const {
 }
 
 // Menu action implementations
-void MenuManager::ShowSystemInfo() {
-    ClearScreen();
-    std::wcout << L"=== SYSTEM INFORMATION ===" << std::endl;
-    std::wcout << GetSystemInfo() << std::endl;
-    std::wcout << GetUserInfo() << std::endl;
-    std::wcout << GetComputerInfo() << std::endl;
-    std::wcout << GetTimeZoneInfo() << std::endl;
-    std::wcout << L"Memory Usage: " << Utils::GetProcessMemoryUsage() << L" bytes" << std::endl;
-    std::wcout << L"Process Elevated: " << (Utils::IsProcessElevated() ? L"Yes" : L"No") << std::endl;
-    PauseForUser();
-}
-
-void MenuManager::ShowConfiguration() {
-    ClearScreen();
-    std::wcout << L"=== CONFIGURATION ===" << std::endl;
-    std::wcout << L"Configuration options will be implemented here." << std::endl;
-    PauseForUser();
-}
-
-void MenuManager::ShowPerformance() {
-    ClearScreen();
-    std::wcout << L"=== PERFORMANCE ===" << std::endl;
-    std::wcout << L"Performance monitoring will be implemented here." << std::endl;
-    PauseForUser();
-}
-
 void MenuManager::ShowHelp() {
     ClearScreen();
     std::wcout << L"=== HELP ===" << std::endl;
@@ -330,10 +246,6 @@ void MenuManager::ShowHelp() {
     std::wcout << std::endl;
     std::wcout << L"Categories:" << std::endl;
     std::wcout << L"- Configuration: Overlay settings and preferences" << std::endl;
-    std::wcout << L"- System: System information and diagnostics" << std::endl;
-    std::wcout << L"- Performance: Performance monitoring and optimization" << std::endl;
-    std::wcout << L"- Utilities: Utility functions and tools" << std::endl;
-    std::wcout << L"- Advanced: Advanced options and debugging" << std::endl;
     PauseForUser();
 }
 
@@ -437,128 +349,7 @@ void MenuManager::LoadConfiguration() {
     PauseForUser();
 }
 
-// System actions
-void MenuManager::ShowSystemCompatibility() {
-    ClearScreen();
-    std::wcout << L"=== SYSTEM COMPATIBILITY ===" << std::endl;
-    std::wcout << L"Windows 7+: " << (Utils::IsWindows7OrLater() ? L"Yes" : L"No") << std::endl;
-    std::wcout << L"Windows 10+: " << (Utils::IsWindows10OrLater() ? L"Yes" : L"No") << std::endl;
-    std::wcout << L"DirectX 9: " << (Utils::IsDirectX9Available() ? L"Available" : L"Not Available") << std::endl;
-    std::wcout << L"DirectX 11: " << (Utils::IsDirectX11Available() ? L"Available" : L"Not Available") << std::endl;
-    std::wcout << L"OpenGL: " << (Utils::IsOpenGLAvailable() ? L"Available" : L"Not Available") << std::endl;
-    PauseForUser();
-}
 
-void MenuManager::ShowGraphicsAPIs() {
-    ClearScreen();
-    std::wcout << L"=== GRAPHICS APIs ===" << std::endl;
-    auto apis = Utils::GetAvailableGraphicsAPIs();
-    for (const auto& api : apis) {
-        switch (api) {
-            case GraphicsAPI::D3D9: std::wcout << L"DirectX 9" << std::endl; break;
-            case GraphicsAPI::D3D11: std::wcout << L"DirectX 11" << std::endl; break;
-            case GraphicsAPI::OPENGL: std::wcout << L"OpenGL" << std::endl; break;
-            default: std::wcout << L"Unknown" << std::endl; break;
-        }
-    }
-    PauseForUser();
-}
-
-void MenuManager::ShowMemoryUsage() {
-    ClearScreen();
-    std::wcout << L"=== MEMORY USAGE ===" << std::endl;
-    size_t memoryUsage = Utils::GetProcessMemoryUsage();
-    std::wcout << L"Current memory usage: " << memoryUsage << L" bytes (" 
-               << (memoryUsage / 1024 / 1024) << L" MB)" << std::endl;
-    std::wcout << L"Maximum allowed: 25 MB" << std::endl;
-    PauseForUser();
-}
-
-void MenuManager::ShowProcessInfo() {
-    ClearScreen();
-    std::wcout << L"=== PROCESS INFORMATION ===" << std::endl;
-    std::wcout << L"Process ID: " << GetCurrentProcessId() << std::endl;
-    std::wcout << L"Thread ID: " << GetCurrentThreadId() << std::endl;
-    std::wcout << L"Elevated: " << (Utils::IsProcessElevated() ? L"Yes" : L"No") << std::endl;
-    PauseForUser();
-}
-
-void MenuManager::ShowWindowInfo() {
-    ClearScreen();
-    std::wcout << L"=== WINDOW INFORMATION ===" << std::endl;
-    HWND foregroundWindow = Utils::GetForegroundGameWindow();
-    if (foregroundWindow) {
-        std::wcout << L"Foreground window: " << Utils::GetWindowTitle(foregroundWindow) << std::endl;
-        std::wcout << L"Class: " << Utils::GetWindowClassName(foregroundWindow) << std::endl;
-        std::wcout << L"Process ID: " << Utils::GetWindowProcessId(foregroundWindow) << std::endl;
-        std::wcout << L"Fullscreen: " << (Utils::IsFullscreenWindow(foregroundWindow) ? L"Yes" : L"No") << std::endl;
-    } else {
-        std::wcout << L"No foreground window detected." << std::endl;
-    }
-    PauseForUser();
-}
-
-// Utility actions
-void MenuManager::ClearConsole() {
-    ClearScreen();
-}
-
-void MenuManager::ShowLogs() {
-    ClearScreen();
-    std::wcout << L"=== APPLICATION LOGS ===" << std::endl;
-    std::wcout << L"Log display will be implemented here." << std::endl;
-    PauseForUser();
-}
-
-void MenuManager::BackupConfig() {
-    ClearScreen();
-    std::wcout << L"=== BACKUP CONFIGURATION ===" << std::endl;
-    std::wcout << L"Configuration backup will be implemented here." << std::endl;
-    PauseForUser();
-}
-
-void MenuManager::RestoreConfig() {
-    ClearScreen();
-    std::wcout << L"=== RESTORE CONFIGURATION ===" << std::endl;
-    std::wcout << L"Configuration restore will be implemented here." << std::endl;
-    PauseForUser();
-}
-
-void MenuManager::ValidateConfig() {
-    ClearScreen();
-    std::wcout << L"=== VALIDATE CONFIGURATION ===" << std::endl;
-    std::wcout << L"Configuration validation will be implemented here." << std::endl;
-    PauseForUser();
-}
-
-// Performance actions
-void MenuManager::StartPerformanceTest() {
-    ClearScreen();
-    std::wcout << L"=== START PERFORMANCE TEST ===" << std::endl;
-    std::wcout << L"Performance test started." << std::endl;
-    PauseForUser();
-}
-
-void MenuManager::StopPerformanceTest() {
-    ClearScreen();
-    std::wcout << L"=== STOP PERFORMANCE TEST ===" << std::endl;
-    std::wcout << L"Performance test stopped." << std::endl;
-    PauseForUser();
-}
-
-void MenuManager::ShowPerformanceStats() {
-    ClearScreen();
-    std::wcout << L"=== PERFORMANCE STATISTICS ===" << std::endl;
-    std::wcout << L"Performance statistics will be implemented here." << std::endl;
-    PauseForUser();
-}
-
-void MenuManager::OptimizeSettings() {
-    ClearScreen();
-    std::wcout << L"=== OPTIMIZE SETTINGS ===" << std::endl;
-    std::wcout << L"Settings optimization will be implemented here." << std::endl;
-    PauseForUser();
-}
 
 // Utility functions
 void MenuManager::ClearScreen() {

@@ -86,7 +86,7 @@ int wmain(int argc, wchar_t* argv[]) {
         std::wcout << L"  --menu, -m     Launch interactive control panel" << std::endl;
         std::wcout << L"  --help, -h     Show this help message" << std::endl;
         std::wcout << L"  --version, -v  Show version information" << std::endl;
-        std::wcout << L"  (no args)      Launch interactive control panel" << std::endl;
+        std::wcout << L"  (no args)      Launch FPS overlay directly" << std::endl;
         return 0;
     }
     
@@ -98,8 +98,8 @@ int wmain(int argc, wchar_t* argv[]) {
         return 0;
     }
     
-    // Default behavior: Launch menu if no arguments or if menu mode requested
-    if (menuMode || argc == 1) {
+    // Default behavior: Launch FPS overlay directly, menu only with --menu flag
+    if (menuMode) {
         // Initialize and run menu system
         g_menuManager = std::make_unique<MenuManager>();
         if (!g_menuManager->Initialize()) {

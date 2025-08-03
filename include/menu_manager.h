@@ -54,9 +54,6 @@ public:
     void AddCategory(const MenuCategory& category);
     
     // Menu actions
-    void ShowSystemInfo();
-    void ShowConfiguration();
-    void ShowPerformance();
     void ShowHelp();
     void ShowAbout();
     void ExitApplication();
@@ -72,26 +69,6 @@ public:
     void ResetToDefaults();
     void SaveConfiguration();
     void LoadConfiguration();
-    
-    // System actions
-    void ShowSystemCompatibility();
-    void ShowGraphicsAPIs();
-    void ShowMemoryUsage();
-    void ShowProcessInfo();
-    void ShowWindowInfo();
-    
-    // Utility actions
-    void ClearConsole();
-    void ShowLogs();
-    void BackupConfig();
-    void RestoreConfig();
-    void ValidateConfig();
-    
-    // Performance actions
-    void StartPerformanceTest();
-    void StopPerformanceTest();
-    void ShowPerformanceStats();
-    void OptimizeSettings();
     
     // Get system information
     std::wstring GetSystemInfo() const;
